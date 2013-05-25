@@ -14,15 +14,14 @@
     </style>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
     <div id="editor">#include "iostream"
 using namespace std;
 int main()
 {
   return 0;
 }</div>
-    <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/javascripts/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/ambiance");
