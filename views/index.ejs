@@ -1,33 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
     <style type="text/css" media="screen">
         #editor {
             position: absolute;
             top: 0;
             right: 0;
-            bottom: 0;
+            bottom: 40px;
             left: 0;
         }
+
+        body {
+            background-color: #393939;
+        }
     </style>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <div id="editor">#include "iostream"
+</head>
+<body>
+<div id="editor">#include "iostream"
 using namespace std;
 int main()
 {
   return 0;
-}</div>
-    <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/ambiance");
-        editor.getSession().setMode("ace/mode/c_cpp");
-        document.getElementById('editor').style.fontSize='14px';
-    </script>
-  </body>
+}
+
+
+
+</div>
+<div class="btn-group" style="position:absolute;bottom: 10px ;left:0">
+    <button class="btn" id="save">保存</button>
+    <button class="btn" id="compile">编译</button>
+    <button class="btn" id="run">运行</button>
+</div>
+<input type="text" id="pathname" class="input-xxlarge" style="position:absolute;bottom: 0px ;left:150px;" placeholder="../../wikioi/1.cpp" value="../../wikioi/1.cpp">
+
+<script src="/javascripts/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/ambiance");
+    editor.getSession().setMode("ace/mode/c_cpp");
+    document.getElementById('editor').style.fontSize = '14px';
+    function savecode() {
+        var html = $.ajax({
+            url: "/files",
+            type: "post",
+            async: true,
+            data: {
+                "code": editor.getValue(),
+                "action": "save",
+                "pathname": $("#pathname").val()
+            },
+            success:function(){
+                if ("success" == html.responseText)
+                {
+                    alert("Success!");
+                    return true;
+                }
+                else {
+                    alert("Failed! The File wasn't saved!\n"+html.responseText+"\n Server was down!");
+                    return false;
+                }
+            }
+        });
+    }
+    $("#save").click(savecode);
+</script>
+</body>
 </html>
